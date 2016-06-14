@@ -1,0 +1,100 @@
+package com.yat3s.library.adapter;
+
+import android.content.Context;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by Yat3s on 6/13/16.
+ * Email: yat3s@opentown.cn
+ * Copyright (c) 2015 opentown. All rights reserved.
+ */
+
+public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<BaseViewHolder> {
+    private List<T> mData;
+    private Context mContext;
+    protected LayoutInflater mInflater;
+    private OnItemClickListener mOnItemClickListener;
+
+    public BaseRecyclerViewAdapter(Context context) {
+        this(context, null);
+    }
+
+
+    public BaseRecyclerViewAdapter(Context context, List<T> data) {
+        mData = null == data ? new ArrayList<T>() : data;
+        mContext = context;
+        mInflater = LayoutInflater.from(context);
+    }
+
+    @Override
+    public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new BaseViewHolder(mInflater.inflate(getItemViewResId
+                (viewType), parent));
+    }
+
+    public void addFirstDataSet(List<T> data) {
+        mData = data;
+        notifyDataSetChanged();
+    }
+
+    public void addMoreDataSet(List<T> data) {
+        mData.addAll(data);
+        notifyDataSetChanged();
+    }
+
+    public List getDataSource() {
+        return mData;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        mOnItemClickListener = onItemClickListener;
+    }
+
+    protected abstract void bindDataToItemView(BaseViewHolder holder, T data, int position);
+
+    protected abstract int getItemViewResId(int viewType);
+
+    protected T getItem(int position) {
+        return mData.get(position);
+    }
+
+    @Override
+    public void onBindViewHolder(BaseViewHolder holder, int position) {
+        final T item = getItem(position);
+        bindDataToItemView(holder, item, position);
+        bindClickListenerToItemView(holder, item, position);
+    }
+
+    protected final void bindClickListenerToItemView(BaseViewHolder holder, final T
+            data, final int position) {
+        if (null != mOnItemClickListener) {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mOnItemClickListener.onClick(view, data, position);
+                }
+            });
+
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    mOnItemClickListener.onLongClick(v, data, position);
+                    return true;
+                }
+            });
+        }
+    }
+
+
+    public interface OnItemClickListener<T> {
+        void onClick(View view, T data, int position);
+
+        void onLongClick(View view, T data, int position);
+    }
+}
