@@ -5,12 +5,11 @@ android {
     buildToolsVersion "23.0.2"
 
     defaultConfig {
-        applicationId "com.yat3s.library.adapter"
+        applicationId "com.yat3s.library.sample"
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -21,8 +20,6 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.0.1'
-    compile 'com.android.support:recyclerview-v7:23.0.1'
+    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile project(':library')
 }
