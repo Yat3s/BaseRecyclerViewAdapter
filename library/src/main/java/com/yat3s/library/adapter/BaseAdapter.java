@@ -35,7 +35,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
     @Override
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new BaseViewHolder(mInflater.inflate(getItemViewResId
-                (viewType), parent));
+                (viewType), parent, false));
     }
 
     public void addFirstDataSet(List<T> data) {
@@ -95,6 +95,11 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
                 }
             });
         }
+    }
+
+    @Override
+    public int getItemCount() {
+        return mData.size();
     }
 
     public interface OnItemClickListener<T> {
