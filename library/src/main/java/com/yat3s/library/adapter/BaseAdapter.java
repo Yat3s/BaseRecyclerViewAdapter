@@ -16,7 +16,11 @@ import java.util.List;
  */
 
 public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder> {
+    private static final int VIEW_TYPE_HEADER = 0x0010;
+    private static final int VIEW_TYPE_ITEM = 0x0011;
+
     private List<T> mData;
+    private View mHeaderView;
     private Context mContext;
     protected LayoutInflater mInflater;
     private OnItemClickListener mOnItemClickListener;
@@ -34,8 +38,27 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
 
     @Override
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new BaseViewHolder(mInflater.inflate(getItemViewResId
-                (viewType), parent, false));
+        BaseViewHolder baseViewHolder = null;
+        switch (viewType) {
+            case VIEW_TYPE_HEADER:
+                baseViewHolder = new BaseViewHolder(mHeaderView);
+                break;
+            case VIEW_TYPE_ITEM:
+                baseViewHolder = new BaseViewHolder(mInflater.inflate(getItemViewResId(viewType),
+                        parent, false));
+                break;
+        }
+
+        return baseViewHolder;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (position < getHeaderViewCount()) {
+            return VIEW_TYPE_HEADER;
+        } else {
+            return VIEW_TYPE_ITEM;
+        }
     }
 
     public void addFirstDataSet(List<T> data) {
@@ -50,6 +73,20 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
 
     public List getDataSource() {
         return mData;
+    }
+
+    public void addHeaderView(View headerView) {
+        mHeaderView = headerView;
+        notifyDataSetChanged();
+    }
+
+    public void addHeaderViewResId(int layoutResId) {
+        mHeaderView = mInflater.inflate(layoutResId, null);
+        notifyDataSetChanged();
+    }
+
+    private int getHeaderViewCount() {
+        return null == mHeaderView ? 0 : 1;
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
@@ -70,9 +107,17 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
 
     @Override
     public void onBindViewHolder(BaseViewHolder holder, int position) {
-        final T item = getItem(position);
-        bindDataToItemView(holder, item, position);
-        bindClickListenerToItemView(holder, item, position);
+        switch (getItemViewType(position)) {
+            case VIEW_TYPE_HEADER:
+
+                break;
+            case VIEW_TYPE_ITEM:
+                bindDataToItemView(holder, getItem(position - getHeaderViewCount()), position -
+                        getHeaderViewCount());
+                bindClickListenerToItemView(holder, getItem(position - getHeaderViewCount()),
+                        position - getHeaderViewCount());
+                break;
+        }
     }
 
     protected final void bindClickListenerToItemView(BaseViewHolder holder, final T
@@ -99,7 +144,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
 
     @Override
     public int getItemCount() {
-        return mData.size();
+        return mData.size() + getHeaderViewCount();
     }
 
     public interface OnItemClickListener<T> {
