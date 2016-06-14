@@ -15,18 +15,18 @@ import java.util.List;
  * Copyright (c) 2015 opentown. All rights reserved.
  */
 
-public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<BaseViewHolder> {
+public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder> {
     private List<T> mData;
     private Context mContext;
     protected LayoutInflater mInflater;
     private OnItemClickListener mOnItemClickListener;
     private OnItemLongClickListener mOnItemLongClickListener;
 
-    public BaseRecyclerViewAdapter(Context context) {
+    public BaseAdapter(Context context) {
         this(context, null);
     }
 
-    public BaseRecyclerViewAdapter(Context context, List<T> data) {
+    public BaseAdapter(Context context, List<T> data) {
         mData = null == data ? new ArrayList<T>() : data;
         mContext = context;
         mInflater = LayoutInflater.from(context);
