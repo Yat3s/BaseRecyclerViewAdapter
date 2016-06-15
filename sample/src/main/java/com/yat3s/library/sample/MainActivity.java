@@ -45,22 +45,21 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Toast.makeText(MainActivity.this, "Header Click", Toast.LENGTH_SHORT)
                         .show();
+                mCarAdapter.addMoreDataSet(generateMockDataSet());
             }
         });
     }
 
     private void loadData() {
-        List<CarModel> mockData = new ArrayList<>();
-        CarModel car1 = new CarModel("Panamera", 1092321);
-        CarModel car2 = new CarModel("Porsche", 4231942);
-        CarModel car3 = new CarModel("宝马", 4231942);
-        CarModel car4 = new CarModel("奔驰", 4231942);
-
-        mockData.add(car1);
-        mockData.add(car2);
-        mockData.add(car3);
-        mockData.add(car4);
-        mCarAdapter.addFirstDataSet(mockData);
+        mCarAdapter.addFirstDataSet(generateMockDataSet());
     }
 
+    private List<CarModel> generateMockDataSet() {
+        List<CarModel> mockData = new ArrayList<>();
+        for (int idx = 0; idx < 10; idx++) {
+            CarModel car = new CarModel("Car " + idx, (int) (Math.random() * 10000));
+            mockData.add(car);
+        }
+        return mockData;
+    }
 }

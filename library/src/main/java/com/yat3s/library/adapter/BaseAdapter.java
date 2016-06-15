@@ -2,12 +2,15 @@ package com.yat3s.library.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Yat3s on 6/13/16.
@@ -18,7 +21,6 @@ import java.util.List;
 public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder> {
     private static final String TAG = "BaseAdapter";
     private static final int VIEW_TYPE_HEADER = 0x0010;
-    private static final int VIEW_TYPE_ITEM = 0x0011;
 
     private List<T> mData;
     private View mHeaderView;
@@ -27,6 +29,8 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
     private OnHeaderClickListener mOnHeaderClickListener;
     private OnItemClickListener mOnItemClickListener;
     private OnItemLongClickListener mOnItemLongClickListener;
+    private Map<Integer, Integer> layoutIdMap, viewTypeMap;
+    private int mCurrentViewTypeValue = 0x0107;
 
     public BaseAdapter(Context context) {
         this(context, null);
@@ -34,25 +38,24 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
 
     public BaseAdapter(Context context, List<T> data) {
         mData = null == data ? new ArrayList<T>() : data;
+        layoutIdMap = new HashMap<>();
+        viewTypeMap = new HashMap<>();
         mContext = context;
         mInflater = LayoutInflater.from(context);
     }
 
     @Override
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        BaseViewHolder baseViewHolder = null;
-        switch (viewType) {
-            case VIEW_TYPE_HEADER:
-                baseViewHolder = new BaseViewHolder(mHeaderView);
-                bindClickListenerToHeaderView(baseViewHolder);
-                break;
-            case VIEW_TYPE_ITEM:
-                baseViewHolder = new BaseViewHolder(mInflater.inflate(getItemViewResId(viewType),
-                        parent, false));
-                bindClickListenerToItemView(baseViewHolder);
-                break;
+        Log.d(TAG, "onCreateViewHolder: " + viewType);
+        BaseViewHolder baseViewHolder;
+        if (VIEW_TYPE_HEADER == viewType) {
+            baseViewHolder = new BaseViewHolder(mHeaderView);
+            bindClickListenerToHeaderView(baseViewHolder);
+        } else {
+            baseViewHolder = new BaseViewHolder(mInflater.inflate(layoutIdMap.get(viewType),
+                    parent, false));
+            bindClickListenerToItemView(baseViewHolder);
         }
-
         return baseViewHolder;
     }
 
@@ -61,7 +64,13 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
         if (position < getHeaderViewCount()) {
             return VIEW_TYPE_HEADER;
         } else {
-            return VIEW_TYPE_ITEM;
+            int currentLayoutId = getItemViewLayoutId(position - getHeaderViewCount());
+            if (null == viewTypeMap.get(currentLayoutId)) {
+                mCurrentViewTypeValue++;
+                viewTypeMap.put(currentLayoutId, mCurrentViewTypeValue);
+                layoutIdMap.put(viewTypeMap.get(currentLayoutId), currentLayoutId);
+            }
+            return viewTypeMap.get(currentLayoutId);
         }
     }
 
@@ -106,7 +115,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
 
     protected abstract void bindDataToItemView(BaseViewHolder holder, T data, int position);
 
-    protected abstract int getItemViewResId(int viewType);
+    protected abstract int getItemViewLayoutId(int position);
 
     protected T getItem(int position) {
         return mData.get(position);
@@ -118,7 +127,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
             case VIEW_TYPE_HEADER:
                 // Do nothing
                 break;
-            case VIEW_TYPE_ITEM:
+            default:
                 bindDataToItemView(holder, getItem(position - getHeaderViewCount()), position -
                         getHeaderViewCount());
                 break;

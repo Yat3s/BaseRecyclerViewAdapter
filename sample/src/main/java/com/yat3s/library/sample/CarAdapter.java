@@ -23,7 +23,10 @@ public class CarAdapter extends BaseAdapter<CarModel> {
     }
 
     @Override
-    protected int getItemViewResId(int viewType) {
-        return R.layout.item_car;
+    protected int getItemViewLayoutId(int position) {
+        if (position % 3 == 0) {
+            return R.layout.item_car;
+        }
+        return R.layout.item_house;
     }
 }
