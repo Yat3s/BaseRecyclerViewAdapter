@@ -40,6 +40,13 @@ public class MainActivity extends AppCompatActivity {
                         .show();
             }
         });
+        mCarAdapter.setOnHeaderClickListener(new BaseAdapter.OnHeaderClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(MainActivity.this, "Header Click", Toast.LENGTH_SHORT)
+                        .show();
+            }
+        });
     }
 
     private void loadData() {
