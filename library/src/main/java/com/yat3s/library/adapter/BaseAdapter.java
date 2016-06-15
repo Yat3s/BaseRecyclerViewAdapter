@@ -23,7 +23,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
     private List<T> mData;
     private View mHeaderView;
     private Context mContext;
-    protected LayoutInflater mInflater;
+    private LayoutInflater mInflater;
     private OnHeaderClickListener mOnHeaderClickListener;
     private OnItemClickListener mOnItemClickListener;
     private OnItemLongClickListener mOnItemLongClickListener;
