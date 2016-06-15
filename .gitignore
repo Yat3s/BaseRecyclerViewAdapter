@@ -1,8 +1,23 @@
-*.iml
-.gradle
-/local.properties
-/.idea/workspace.xml
-/.idea/libraries
+# generated files
+bin/
+gen/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Windows thumbnail db
+Thumbs.db
+
+# OSX files
 .DS_Store
-/build
-/captures
+
+# Eclipse project files
+.classpath
+.project
+
+# Android Studio
+*.iws
+*.iml
+.idea
+.gradle
+build/
