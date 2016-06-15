@@ -14,7 +14,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private RecyclerView mRecyclerView;
     private CarAdapter mCarAdapter;
 
     @Override
@@ -29,9 +28,9 @@ public class MainActivity extends AppCompatActivity {
     private void initView() {
         mCarAdapter = new CarAdapter(this);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(mCarAdapter);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(mCarAdapter);
         mCarAdapter.addHeaderViewResId(R.layout.layout_header);
         mCarAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener<CarModel>() {
             @Override
