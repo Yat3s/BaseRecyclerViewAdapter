@@ -1,6 +1,11 @@
 package com.yat3s.library.adapter;
 
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.View;
@@ -15,10 +20,12 @@ import android.widget.TextView;
 
 public class BaseViewHolder extends RecyclerView.ViewHolder {
     private final SparseArray<View> mViews;
+    private Context mContext;
 
-    public BaseViewHolder(View itemView) {
+    public BaseViewHolder(View itemView, Context context) {
         super(itemView);
         mViews = new SparseArray<>();
+        mContext = context;
     }
 
     @SuppressWarnings("unchecked")
@@ -49,6 +56,12 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
         return this;
     }
 
+    public BaseViewHolder setTextColorRes(int viewId, int textColorRes) {
+        TextView view = getView(viewId);
+        view.setTextColor(mContext.getResources().getColor(textColorRes));
+        return this;
+    }
+
     public BaseViewHolder setImageResource(int viewId, int imageResId) {
         ImageView view = getView(viewId);
         view.setImageResource(imageResId);
@@ -73,6 +86,15 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
         return this;
     }
 
+    public BaseViewHolder setTypeface(Typeface typeface, int... viewIds) {
+        for (int viewId : viewIds) {
+            TextView view = getView(viewId);
+            view.setTypeface(typeface);
+            view.setPaintFlags(view.getPaintFlags() | Paint.SUBPIXEL_TEXT_FLAG);
+        }
+        return this;
+    }
+
     public BaseViewHolder setOnClickListener(int viewId, View.OnClickListener listener) {
         View view = getView(viewId);
         view.setOnClickListener(listener);
@@ -94,6 +116,20 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
     public BaseViewHolder setTag(int viewId, Object tag) {
         View view = getView(viewId);
         view.setTag(tag);
+        return this;
+    }
+
+    public BaseViewHolder startActivity(Class activity, Bundle bundle) {
+        Intent intent = new Intent(mContext, activity);
+        if (null != bundle) {
+            intent.putExtras(bundle);
+        }
+        mContext.startActivity(intent);
+        return this;
+    }
+
+    public BaseViewHolder startActivity(Class activity) {
+        startActivity(activity, null);
         return this;
     }
 }

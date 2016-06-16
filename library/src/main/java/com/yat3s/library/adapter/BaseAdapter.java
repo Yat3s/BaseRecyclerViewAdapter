@@ -43,7 +43,6 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
      */
     private Map<Integer, Integer> layoutIdMap, viewTypeMap;
     private int mCurrentViewTypeValue = 0x0107;
-    private int mLastItemPosition = -1;
 
     /**
      * Animation
@@ -53,6 +52,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
     private boolean showItemAnimationEveryTime = false;
     private Interpolator mItemAnimationInterpolator;
     private CustomAnimator mCustomAnimator;
+    private int mLastItemPosition = -1;
 
     public BaseAdapter(Context context) {
         this(context, null);
@@ -70,11 +70,11 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         BaseViewHolder baseViewHolder;
         if (VIEW_TYPE_HEADER == viewType) {
-            baseViewHolder = new BaseViewHolder(mHeaderView);
+            baseViewHolder = new BaseViewHolder(mHeaderView, mContext);
             bindClickListenerToHeaderView(baseViewHolder);
         } else {
             baseViewHolder = new BaseViewHolder(mInflater.inflate(layoutIdMap.get(viewType),
-                    parent, false));
+                    parent, false), mContext);
             bindClickListenerToItemView(baseViewHolder);
         }
         return baseViewHolder;
