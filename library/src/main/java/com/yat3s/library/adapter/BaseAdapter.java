@@ -181,7 +181,8 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
      */
     public void translateHeader(float of) {
         float ofCalculated = of * mScrollMultiplier;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB && of < mHeaderView.getHeight()) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB && of < mHeaderView.getHeight
+                ()) {
             mHeaderView.setTranslationY(ofCalculated);
         } else if (of < mHeaderView.getHeight()) {
             TranslateAnimation anim = new TranslateAnimation(0, 0, ofCalculated, ofCalculated);
@@ -191,39 +192,17 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
         }
         mHeaderView.setClipY(Math.round(ofCalculated));
         if (mParallaxScroll != null) {
-            final RecyclerView.ViewHolder holder = mRecyclerView.findViewHolderForAdapterPosition(0);
+            final RecyclerView.ViewHolder holder = mRecyclerView.findViewHolderForAdapterPosition
+                    (0);
             float left;
             if (holder != null) {
-                left = Math.min(1, ((ofCalculated) / (mHeaderView.getHeight() * mScrollMultiplier)));
-            }else {
+                left = Math.min(1, ((ofCalculated) / (mHeaderView.getHeight() *
+                        mScrollMultiplier)));
+            } else {
                 left = 1;
             }
             mParallaxScroll.onParallaxScroll(left, of, mHeaderView);
         }
-    }
-
-    /**
-     * Set the view as header.
-     *
-     * @param header The inflated header
-     * @param view   The RecyclerView to set scroll listeners
-     */
-    public void setParallaxHeader(View header, final RecyclerView view) {
-        mRecyclerView = view;
-        mHeaderView = new CustomRelativeWrapper(header.getContext(), mShouldClipView);
-        mHeaderView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        mHeaderView.addView(header, new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        view.setOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if (mHeaderView != null) {
-                    translateHeader(mRecyclerView.getLayoutManager().getChildAt(0) == mHeaderView ?
-                            mRecyclerView.computeVerticalScrollOffset() : mHeaderView.getHeight());
-
-                }
-            }
-        });
     }
 
 
@@ -259,25 +238,6 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
     @Override
     public int getItemCount() {
         return mData.size() + getHeaderViewCount();
-    }
-
-
-    /**
-     * Header api
-     */
-    public void addHeaderView(View headerView) {
-        mHeaderView = new CustomRelativeWrapper(headerView.getContext());
-        mHeaderView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        mHeaderView.addView(headerView);
-        notifyDataSetChanged();
-    }
-
-    public void addHeaderViewResId(int layoutResId) {
-        addHeaderView(mInflater.inflate(layoutResId, null));
-    }
-
-    private int getHeaderViewCount() {
-        return null == mHeaderView ? 0 : 1;
     }
 
 
@@ -323,6 +283,65 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
 
 
     /**
+     * Header api
+     */
+    public void addHeaderView(View headerView) {
+        mHeaderView = new CustomRelativeWrapper(headerView.getContext());
+        mHeaderView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams
+                .WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        mHeaderView.addView(headerView);
+        notifyDataSetChanged();
+    }
+
+    public void addHeaderViewResId(int layoutResId) {
+        addHeaderView(mInflater.inflate(layoutResId, null));
+    }
+
+    public void addParallaxHeaderView(View headerView, final RecyclerView recyclerView) {
+        mRecyclerView = recyclerView;
+        mHeaderView = new CustomRelativeWrapper(headerView.getContext(), mShouldClipView);
+        mHeaderView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams
+                .WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        mHeaderView.addView(headerView, new RelativeLayout.LayoutParams(ViewGroup.LayoutParams
+                .MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (mHeaderView != null) {
+                    translateHeader(mRecyclerView.getLayoutManager().getChildAt(0) == mHeaderView ?
+                            mRecyclerView.computeVerticalScrollOffset() : mHeaderView.getHeight());
+                }
+            }
+        });
+    }
+
+    public void addParallaxHeaderViewLayoutResId(int layoutResId, final RecyclerView recyclerView) {
+        addParallaxHeaderView(mInflater.inflate(layoutResId, null), recyclerView);
+    }
+
+    public boolean isShouldClipView() {
+        return mShouldClipView;
+    }
+
+    public void setParallaxScroll(OnParallaxScroll parallaxScroll) {
+        mParallaxScroll = parallaxScroll;
+        mParallaxScroll.onParallaxScroll(0, 0, mHeaderView);
+    }
+
+    public void setScrollMultiplier(float mul) {
+        if (mul < 0 || mul > 1f) {
+            throw new IllegalArgumentException("Scroll multiplier must between 0 to 1f");
+        }
+        this.mScrollMultiplier = mul;
+    }
+
+    private int getHeaderViewCount() {
+        return null == mHeaderView ? 0 : 1;
+    }
+
+
+    /**
      * Some interface
      */
     public interface OnHeaderClickListener {
@@ -338,9 +357,6 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
     }
 
     public interface OnParallaxScroll {
-        /**
-         * Event triggered when the parallax is being scrolled.
-         */
         void onParallaxScroll(float percentage, float offset, View parallax);
     }
 
