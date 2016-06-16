@@ -1,5 +1,7 @@
 package com.yat3s.library.sample;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +13,12 @@ import com.yat3s.library.adapter.BaseAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+/**
+ * Created by Yat3s on 6/14/16.
+ * Email: hawkoyates@gmail.com
+ * GitHub: https://github.com/yat3s
+ */
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,6 +40,14 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(mCarAdapter);
         mCarAdapter.addHeaderViewResId(R.layout.layout_header);
+//        mCarAdapter.setItemAnimation(AnimationType.SLIDE_FROM_RIGHT);
+        mCarAdapter.setCustomItemAnimator(new BaseAdapter.CustomAnimator() {
+            @Override
+            public Animator getAnimator(View itemView) {
+                return ObjectAnimator.ofFloat(itemView, "translationX", -100, 0);
+            }
+        });
+        mCarAdapter.setShowItemAnimationEveryTime(true);
         mCarAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener<CarModel>() {
             @Override
             public void onClick(View view, CarModel car, int position) {
@@ -55,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
     private List<CarModel> generateMockDataSet() {
         List<CarModel> mockData = new ArrayList<>();
-        for (int idx = 0; idx < 10; idx++) {
+        for (int idx = 0; idx < 50; idx++) {
             CarModel car = new CarModel("Car " + idx, (int) (Math.random() * 10000));
             mockData.add(car);
         }
