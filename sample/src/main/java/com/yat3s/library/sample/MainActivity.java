@@ -1,10 +1,7 @@
 package com.yat3s.library.sample;
 
-import android.animation.Animator;
-import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -43,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(mCarAdapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(this));
-        mCarAdapter.addHeaderViewResId(R.layout.layout_header);
+        mCarAdapter.addParallaxHeaderViewLayoutResId(R.layout.layout_header, recyclerView);
         mCarAdapter.setItemAnimation(AnimationType.SCALE);
 //        mCarAdapter.setCustomItemAnimator(new BaseAdapter.CustomAnimator() {
 //            @Override
@@ -51,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 //                return ObjectAnimator.ofFloat(itemView, "translationX", -100, 0);
 //            }
 //        });
-        mCarAdapter.setShowItemAnimationEveryTime(true);
+        mCarAdapter.setShowItemAnimationEveryTime(false);
         mCarAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener<CarModel>() {
             @Override
             public void onClick(View view, CarModel car, int position) {
