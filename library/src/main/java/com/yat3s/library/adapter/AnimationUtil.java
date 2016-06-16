@@ -4,17 +4,19 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.view.View;
+import android.view.animation.Interpolator;
 
 /**
  * Created by Yat3s on 6/16/16.
- * Email: yat3s@opentown.cn
- * Copyright (c) 2015 opentown. All rights reserved.
+ * Email: hawkoyates@gmail.com
+ * GitHub: https://github.com/yat3s
  */
 
 public class AnimationUtil {
     private AnimationType mAnimationType = AnimationType.ALPHA;
     private Animator mCustomAnimator;
     private View mTargetView;
+    private Interpolator mInterpolator;
     private int mDuration = 300;
 
     public AnimationUtil() {
@@ -32,6 +34,11 @@ public class AnimationUtil {
 
     public AnimationUtil setDuration(int duration) {
         mDuration = duration;
+        return this;
+    }
+
+    public AnimationUtil setInterpolator(Interpolator interpolator) {
+        mInterpolator = interpolator;
         return this;
     }
 
@@ -74,6 +81,9 @@ public class AnimationUtil {
                 break;
         }
 
+        if (null != mInterpolator) {
+            animatorSet.setInterpolator(mInterpolator);
+        }
         animatorSet.setDuration(mDuration);
         animatorSet.start();
     }

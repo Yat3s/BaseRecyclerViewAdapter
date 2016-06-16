@@ -13,6 +13,12 @@ import com.yat3s.library.adapter.BaseAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Created by Yat3s on 6/14/16.
+ * Email: hawkoyates@gmail.com
+ * GitHub: https://github.com/yat3s
+ */
+
 public class MainActivity extends AppCompatActivity {
 
     private CarAdapter mCarAdapter;

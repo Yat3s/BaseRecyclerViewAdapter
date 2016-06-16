@@ -13,26 +13,41 @@ import java.util.Map;
 
 /**
  * Created by Yat3s on 6/13/16.
- * Email: yat3s@opentown.cn
- * Copyright (c) 2015 opentown. All rights reserved.
+ * Email: hawkoyates@gmail.com
+ * GitHub: https://github.com/yat3s
  */
 
 public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder> {
     private static final String TAG = "BaseAdapter";
     private static final int VIEW_TYPE_HEADER = 0x0010;
 
+    /**
+     * Base config
+     */
     private List<T> mData;
     private View mHeaderView;
     protected Context mContext;
     private LayoutInflater mInflater;
-    private AnimationType mAnimationType;
-    private int mAnimationDuration = 300;
+
+    /**
+     * Listener
+     */
     private OnHeaderClickListener mOnHeaderClickListener;
     private OnItemClickListener mOnItemClickListener;
     private OnItemLongClickListener mOnItemLongClickListener;
+
+    /**
+     * View type
+     */
     private Map<Integer, Integer> layoutIdMap, viewTypeMap;
     private int mCurrentViewTypeValue = 0x0107;
     private int mLastItemPosition = -1;
+
+    /**
+     * Animation
+     */
+    private AnimationType mAnimationType;
+    private int mAnimationDuration = 300;
     private boolean showItemAnimationEveryTime = false;
 
     public BaseAdapter(Context context) {
