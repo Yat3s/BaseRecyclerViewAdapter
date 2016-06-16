@@ -2,7 +2,6 @@ package com.yat3s.library.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,8 +23,10 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
 
     private List<T> mData;
     private View mHeaderView;
-    private Context mContext;
+    protected Context mContext;
     private LayoutInflater mInflater;
+    private AnimationType mAnimationType;
+    private int mAnimationDuration = 300;
     private OnHeaderClickListener mOnHeaderClickListener;
     private OnItemClickListener mOnItemClickListener;
     private OnItemLongClickListener mOnItemLongClickListener;
@@ -46,7 +47,6 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
 
     @Override
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.d(TAG, "onCreateViewHolder: " + viewType);
         BaseViewHolder baseViewHolder;
         if (VIEW_TYPE_HEADER == viewType) {
             baseViewHolder = new BaseViewHolder(mHeaderView);
@@ -74,53 +74,6 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
         }
     }
 
-    public void addFirstDataSet(List<T> data) {
-        mData = data;
-        notifyDataSetChanged();
-    }
-
-    public void addMoreDataSet(List<T> data) {
-        mData.addAll(data);
-        notifyDataSetChanged();
-    }
-
-    public List getDataSource() {
-        return mData;
-    }
-
-    public void addHeaderView(View headerView) {
-        mHeaderView = headerView;
-        notifyDataSetChanged();
-    }
-
-    public void addHeaderViewResId(int layoutResId) {
-        addHeaderView(mInflater.inflate(layoutResId, null));
-    }
-
-    private int getHeaderViewCount() {
-        return null == mHeaderView ? 0 : 1;
-    }
-
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        mOnItemClickListener = onItemClickListener;
-    }
-
-    public void setOnItemLongClickListener(OnItemLongClickListener onItemLongClickListener) {
-        mOnItemLongClickListener = onItemLongClickListener;
-    }
-
-    public void setOnHeaderClickListener(OnHeaderClickListener onHeaderClickListener) {
-        mOnHeaderClickListener = onHeaderClickListener;
-    }
-
-    protected abstract void bindDataToItemView(BaseViewHolder holder, T data, int position);
-
-    protected abstract int getItemViewLayoutId(int position);
-
-    protected T getItem(int position) {
-        return mData.get(position);
-    }
-
     @Override
     public void onBindViewHolder(BaseViewHolder holder, int position) {
         switch (getItemViewType(position)) {
@@ -130,6 +83,13 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
             default:
                 bindDataToItemView(holder, getItem(position - getHeaderViewCount()), position -
                         getHeaderViewCount());
+                if (null != mAnimationType) {
+                    new AnimationUtil()
+                            .setAnimationType(mAnimationType)
+                            .setTargetView(holder.itemView)
+                            .setDuration(mAnimationDuration)
+                            .start();
+                }
                 break;
         }
     }
@@ -166,6 +126,61 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
                 }
             });
         }
+    }
+
+    public void addFirstDataSet(List<T> data) {
+        mData = data;
+        notifyDataSetChanged();
+    }
+
+    public void addMoreDataSet(List<T> data) {
+        mData.addAll(data);
+        notifyDataSetChanged();
+    }
+
+    public List getDataSource() {
+        return mData;
+    }
+
+    public void addHeaderView(View headerView) {
+        mHeaderView = headerView;
+        notifyDataSetChanged();
+    }
+
+    public void setItemAnimation(AnimationType animationType) {
+        mAnimationType = animationType;
+    }
+
+    public void addHeaderViewResId(int layoutResId) {
+        addHeaderView(mInflater.inflate(layoutResId, null));
+    }
+
+    private int getHeaderViewCount() {
+        return null == mHeaderView ? 0 : 1;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        mOnItemClickListener = onItemClickListener;
+    }
+
+    public void setOnItemLongClickListener(OnItemLongClickListener onItemLongClickListener) {
+        mOnItemLongClickListener = onItemLongClickListener;
+    }
+
+    public void setOnHeaderClickListener(OnHeaderClickListener onHeaderClickListener) {
+        mOnHeaderClickListener = onHeaderClickListener;
+    }
+
+    protected abstract void bindDataToItemView(BaseViewHolder holder, T data, int position);
+
+    protected abstract int getItemViewLayoutId(int position);
+
+    protected Context getContext() {
+        return mContext;
+    }
+
+    protected T getItem(int position) {
+        return mData.get(position);
     }
 
     @Override

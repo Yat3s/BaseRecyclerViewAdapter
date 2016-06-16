@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
 
+import com.yat3s.library.adapter.AnimationType;
 import com.yat3s.library.adapter.BaseAdapter;
 
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(mCarAdapter);
         mCarAdapter.addHeaderViewResId(R.layout.layout_header);
+        mCarAdapter.setItemAnimation(AnimationType.SLIDE_FROM_BOTTOM);
         mCarAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener<CarModel>() {
             @Override
             public void onClick(View view, CarModel car, int position) {
@@ -55,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
     private List<CarModel> generateMockDataSet() {
         List<CarModel> mockData = new ArrayList<>();
-        for (int idx = 0; idx < 10; idx++) {
+        for (int idx = 0; idx < 50; idx++) {
             CarModel car = new CarModel("Car " + idx, (int) (Math.random() * 10000));
             mockData.add(car);
         }
