@@ -85,7 +85,8 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
         if (position < getHeaderViewCount()) {
             return VIEW_TYPE_HEADER;
         } else {
-            int currentLayoutId = getItemViewLayoutId(position - getHeaderViewCount());
+            int currentPosition = position - getHeaderViewCount();
+            int currentLayoutId = getItemViewLayoutId(currentPosition, mData.get(currentPosition));
             if (null == viewTypeMap.get(currentLayoutId)) {
                 mCurrentViewTypeValue++;
                 viewTypeMap.put(currentLayoutId, mCurrentViewTypeValue);
@@ -161,13 +162,12 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
     }
 
 
-
     /**
      * Base api
      */
     protected abstract void bindDataToItemView(BaseViewHolder holder, T data, int position);
 
-    protected abstract int getItemViewLayoutId(int position);
+    protected abstract int getItemViewLayoutId(int position, T data);
 
     public void addFirstDataSet(List<T> data) {
         mData = data;
@@ -197,7 +197,6 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
     }
 
 
-
     /**
      * Header api
      */
@@ -215,7 +214,6 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
     }
 
 
-
     /**
      * Listener api
      */
@@ -231,7 +229,6 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
     public void setOnHeaderClickListener(OnHeaderClickListener onHeaderClickListener) {
         mOnHeaderClickListener = onHeaderClickListener;
     }
-
 
 
     /**
@@ -256,7 +253,6 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
     public void setCustomItemAnimator(CustomAnimator customAnimator) {
         mCustomAnimator = customAnimator;
     }
-
 
 
     /**

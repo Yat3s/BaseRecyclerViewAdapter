@@ -23,8 +23,8 @@ public class CarAdapter extends BaseAdapter<CarModel> {
     }
 
     @Override
-    protected int getItemViewLayoutId(int position) {
-        if (position % 3 == 0) {
+    protected int getItemViewLayoutId(int position, CarModel carModel) {
+        if (carModel.price / 1000 == 3) {
             return R.layout.item_car;
         }
         return R.layout.item_house;
