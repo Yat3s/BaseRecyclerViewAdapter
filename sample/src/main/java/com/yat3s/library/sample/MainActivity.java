@@ -1,5 +1,7 @@
 package com.yat3s.library.sample;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
 
-import com.yat3s.library.adapter.AnimationType;
 import com.yat3s.library.adapter.BaseAdapter;
 
 import java.util.ArrayList;
@@ -39,7 +40,13 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(mCarAdapter);
         mCarAdapter.addHeaderViewResId(R.layout.layout_header);
-        mCarAdapter.setItemAnimation(AnimationType.SLIDE_FROM_RIGHT);
+//        mCarAdapter.setItemAnimation(AnimationType.SLIDE_FROM_RIGHT);
+        mCarAdapter.setCustomItemAnimator(new BaseAdapter.CustomAnimator() {
+            @Override
+            public Animator getAnimator(View itemView) {
+                return ObjectAnimator.ofFloat(itemView, "translationX", -100, 0);
+            }
+        });
         mCarAdapter.setShowItemAnimationEveryTime(true);
         mCarAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener<CarModel>() {
             @Override
