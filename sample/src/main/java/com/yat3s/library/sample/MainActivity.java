@@ -33,7 +33,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(mCarAdapter);
         mCarAdapter.addHeaderViewResId(R.layout.layout_header);
-        mCarAdapter.setItemAnimation(AnimationType.SLIDE_FROM_BOTTOM);
+        mCarAdapter.setItemAnimation(AnimationType.SLIDE_FROM_RIGHT);
+        mCarAdapter.setShowItemAnimationEveryTime(true);
         mCarAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener<CarModel>() {
             @Override
             public void onClick(View view, CarModel car, int position) {

@@ -32,6 +32,8 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
     private OnItemLongClickListener mOnItemLongClickListener;
     private Map<Integer, Integer> layoutIdMap, viewTypeMap;
     private int mCurrentViewTypeValue = 0x0107;
+    private int mLastItemPosition = -1;
+    private boolean showItemAnimationEveryTime = false;
 
     public BaseAdapter(Context context) {
         this(context, null);
@@ -83,12 +85,16 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
             default:
                 bindDataToItemView(holder, getItem(position - getHeaderViewCount()), position -
                         getHeaderViewCount());
+                int currentPosition = holder.getAdapterPosition();
                 if (null != mAnimationType) {
-                    new AnimationUtil()
-                            .setAnimationType(mAnimationType)
-                            .setTargetView(holder.itemView)
-                            .setDuration(mAnimationDuration)
-                            .start();
+                    if (showItemAnimationEveryTime || currentPosition > mLastItemPosition) {
+                        new AnimationUtil()
+                                .setAnimationType(mAnimationType)
+                                .setTargetView(holder.itemView)
+                                .setDuration(mAnimationDuration)
+                                .start();
+                        mLastItemPosition = currentPosition;
+                    }
                 }
                 break;
         }
@@ -149,6 +155,14 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
 
     public void setItemAnimation(AnimationType animationType) {
         mAnimationType = animationType;
+    }
+
+    public void setItemAnimationDuration(int animationDuration) {
+        mAnimationDuration = animationDuration;
+    }
+
+    public void setShowItemAnimationEveryTime(boolean showItemAnimationEveryTime) {
+        this.showItemAnimationEveryTime = showItemAnimationEveryTime;
     }
 
     public void addHeaderViewResId(int layoutResId) {
