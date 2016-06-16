@@ -4,12 +4,15 @@ import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
 
+import com.yat3s.library.adapter.AnimationType;
 import com.yat3s.library.adapter.BaseAdapter;
+import com.yat3s.library.adapter.DividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,14 +42,15 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(mCarAdapter);
+        recyclerView.addItemDecoration(new DividerItemDecoration(this));
         mCarAdapter.addHeaderViewResId(R.layout.layout_header);
-//        mCarAdapter.setItemAnimation(AnimationType.SLIDE_FROM_RIGHT);
-        mCarAdapter.setCustomItemAnimator(new BaseAdapter.CustomAnimator() {
-            @Override
-            public Animator getAnimator(View itemView) {
-                return ObjectAnimator.ofFloat(itemView, "translationX", -100, 0);
-            }
-        });
+        mCarAdapter.setItemAnimation(AnimationType.SCALE);
+//        mCarAdapter.setCustomItemAnimator(new BaseAdapter.CustomAnimator() {
+//            @Override
+//            public Animator getAnimator(View itemView) {
+//                return ObjectAnimator.ofFloat(itemView, "translationX", -100, 0);
+//            }
+//        });
         mCarAdapter.setShowItemAnimationEveryTime(true);
         mCarAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener<CarModel>() {
             @Override
@@ -71,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
     private List<CarModel> generateMockDataSet() {
         List<CarModel> mockData = new ArrayList<>();
-        for (int idx = 0; idx < 50; idx++) {
+        for (int idx = 0; idx < 100; idx++) {
             CarModel car = new CarModel("Car " + idx, (int) (Math.random() * 10000));
             mockData.add(car);
         }
