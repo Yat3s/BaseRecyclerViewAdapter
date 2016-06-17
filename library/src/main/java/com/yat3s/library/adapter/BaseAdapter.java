@@ -70,7 +70,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
     private float mScrollMultiplier = 0.5f;
     private OnParallaxScrollListener mParallaxScrollListener;
     private RecyclerView mRecyclerView;
-    private boolean mShouldClipView = true;
+    private boolean mShouldClipView = false;
 
     public BaseAdapter(Context context) {
         this(context, null);
