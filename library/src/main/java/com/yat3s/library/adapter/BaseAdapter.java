@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.view.animation.Interpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
@@ -69,7 +68,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
      */
     private CustomRelativeWrapper mHeaderView;
     private float mScrollMultiplier = 0.5f;
-    private OnParallaxScroll mParallaxScroll;
+    private OnParallaxScrollListener mParallaxScrollListener;
     private RecyclerView mRecyclerView;
     private boolean mShouldClipView = true;
 
@@ -208,7 +207,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
             mHeaderView.startAnimation(anim);
         }
         mHeaderView.setClipY(Math.round(ofCalculated));
-        if (mParallaxScroll != null) {
+        if (mParallaxScrollListener != null) {
             final RecyclerView.ViewHolder holder = mRecyclerView.findViewHolderForAdapterPosition
                     (0);
             float left;
@@ -218,7 +217,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
             } else {
                 left = 1;
             }
-            mParallaxScroll.onParallaxScroll(left, of, mHeaderView);
+            mParallaxScrollListener.onParallaxScroll(left, of, mHeaderView);
         }
     }
 
@@ -345,9 +344,9 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
         return mShouldClipView;
     }
 
-    public void setParallaxScroll(OnParallaxScroll parallaxScroll) {
-        mParallaxScroll = parallaxScroll;
-        mParallaxScroll.onParallaxScroll(0, 0, mHeaderView);
+    public void setParallaxScrollListener(OnParallaxScrollListener parallaxScroll) {
+        mParallaxScrollListener = parallaxScroll;
+        mParallaxScrollListener.onParallaxScroll(0, 0, mHeaderView);
     }
 
     public void setScrollMultiplier(float mul) {
@@ -395,7 +394,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
         void onLongClick(View view, T data, int position);
     }
 
-    public interface OnParallaxScroll {
+    public interface OnParallaxScrollListener {
         void onParallaxScroll(float percentage, float offset, View parallax);
     }
 
