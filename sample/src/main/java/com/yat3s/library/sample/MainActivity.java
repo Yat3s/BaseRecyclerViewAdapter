@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.yat3s.library.adapter.AnimationType;
@@ -23,6 +24,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private CarAdapter mCarAdapter;
+    private RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,25 +32,24 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         initView();
+        initAdapter();
         loadData();
     }
 
     private void initView() {
-        mCarAdapter = new CarAdapter(this);
+        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this));
+    }
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(mCarAdapter);
-        recyclerView.addItemDecoration(new DividerItemDecoration(this));
-        mCarAdapter.addParallaxHeaderViewLayoutResId(R.layout.layout_header, recyclerView);
+    private void initAdapter() {
+        mCarAdapter = new CarAdapter(this);
+        mCarAdapter.addParallaxHeaderViewLayoutResId(R.layout.layout_header, mRecyclerView);
         mCarAdapter.setItemAnimation(AnimationType.SCALE);
-//        mCarAdapter.setCustomItemAnimator(new BaseAdapter.CustomAnimator() {
-//            @Override
-//            public Animator getAnimator(View itemView) {
-//                return ObjectAnimator.ofFloat(itemView, "translationX", -100, 0);
-//            }
-//        });
         mCarAdapter.setShowItemAnimationEveryTime(false);
+        View emptyView = getLayoutInflater().inflate(R.layout.layout_empty_view, (ViewGroup)
+                mRecyclerView.getParent(), false);
+//        mCarAdapter.setEmptyView(emptyView);
         mCarAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener<CarModel>() {
             @Override
             public void onClick(View view, CarModel car, int position) {
@@ -61,9 +62,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Toast.makeText(MainActivity.this, "Header Click", Toast.LENGTH_SHORT)
                         .show();
-                mCarAdapter.addMoreDataSet(generateMockDataSet());
             }
         });
+        mRecyclerView.setAdapter(mCarAdapter);
     }
 
     private void loadData() {

@@ -26,7 +26,11 @@ import java.util.Map;
 
 public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder> {
     private static final String TAG = "BaseAdapter";
-    private static final int VIEW_TYPE_HEADER = 0x0010;
+
+    private static class VIEW_TYPE {
+        static final int HEADER = 0x0010;
+        static final int EMPTY_VIEW = 0x0011;
+    }
 
     /**
      * Base config
@@ -47,6 +51,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
      */
     private Map<Integer, Integer> layoutIdMap, viewTypeMap;
     private int mCurrentViewTypeValue = 0x0107;
+    private View mEmptyView;
 
     /**
      * Animation
@@ -63,7 +68,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
      */
     private CustomRelativeWrapper mHeaderView;
     private float mScrollMultiplier = 0.5f;
-    private OnParallaxScroll mParallaxScroll;
+    private OnParallaxScrollListener mParallaxScrollListener;
     private RecyclerView mRecyclerView;
     private boolean mShouldClipView = true;
 
@@ -82,13 +87,19 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
     @Override
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         BaseViewHolder baseViewHolder;
-        if (VIEW_TYPE_HEADER == viewType) {
-            baseViewHolder = new BaseViewHolder(mHeaderView, mContext);
-            bindClickListenerToHeaderView(baseViewHolder);
-        } else {
-            baseViewHolder = new BaseViewHolder(mInflater.inflate(layoutIdMap.get(viewType),
-                    parent, false), mContext);
-            bindClickListenerToItemView(baseViewHolder);
+        switch (viewType) {
+            case VIEW_TYPE.HEADER:
+                baseViewHolder = new BaseViewHolder(mHeaderView, mContext);
+                bindClickListenerToHeaderView(baseViewHolder);
+                break;
+            case VIEW_TYPE.EMPTY_VIEW:
+                baseViewHolder = new BaseViewHolder(mEmptyView, mContext);
+                break;
+            default:
+                baseViewHolder = new BaseViewHolder(mInflater.inflate(layoutIdMap.get(viewType),
+                        parent, false), mContext);
+                bindClickListenerToItemView(baseViewHolder);
+                break;
         }
         return baseViewHolder;
     }
@@ -96,7 +107,9 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
     @Override
     public int getItemViewType(int position) {
         if (position < getHeaderViewCount()) {
-            return VIEW_TYPE_HEADER;
+            return VIEW_TYPE.HEADER;
+        } else if (mData.size() == 0 && null != mEmptyView) {
+            return VIEW_TYPE.EMPTY_VIEW;
         } else {
             int currentPosition = position - getHeaderViewCount();
             int currentLayoutId = getItemViewLayoutId(currentPosition, mData.get(currentPosition));
@@ -112,7 +125,10 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
     @Override
     public void onBindViewHolder(BaseViewHolder holder, int position) {
         switch (getItemViewType(position)) {
-            case VIEW_TYPE_HEADER:
+            case VIEW_TYPE.HEADER:
+                // Do nothing
+                break;
+            case VIEW_TYPE.EMPTY_VIEW:
                 // Do nothing
                 break;
             default:
@@ -191,7 +207,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
             mHeaderView.startAnimation(anim);
         }
         mHeaderView.setClipY(Math.round(ofCalculated));
-        if (mParallaxScroll != null) {
+        if (mParallaxScrollListener != null) {
             final RecyclerView.ViewHolder holder = mRecyclerView.findViewHolderForAdapterPosition
                     (0);
             float left;
@@ -201,7 +217,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
             } else {
                 left = 1;
             }
-            mParallaxScroll.onParallaxScroll(left, of, mHeaderView);
+            mParallaxScrollListener.onParallaxScroll(left, of, mHeaderView);
         }
     }
 
@@ -237,7 +253,11 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
 
     @Override
     public int getItemCount() {
-        return mData.size() + getHeaderViewCount();
+        if (mData.size() == 0 && mEmptyView != null) {
+            return getHeaderViewCount() + 1;
+        } else {
+            return mData.size() + getHeaderViewCount();
+        }
     }
 
 
@@ -324,9 +344,9 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
         return mShouldClipView;
     }
 
-    public void setParallaxScroll(OnParallaxScroll parallaxScroll) {
-        mParallaxScroll = parallaxScroll;
-        mParallaxScroll.onParallaxScroll(0, 0, mHeaderView);
+    public void setParallaxScrollListener(OnParallaxScrollListener parallaxScroll) {
+        mParallaxScrollListener = parallaxScroll;
+        mParallaxScrollListener.onParallaxScroll(0, 0, mHeaderView);
     }
 
     public void setScrollMultiplier(float mul) {
@@ -338,6 +358,24 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
 
     private int getHeaderViewCount() {
         return null == mHeaderView ? 0 : 1;
+    }
+
+
+
+    /**
+     * Empty view api
+     */
+    public void setEmptyView(View emptyView) {
+        mEmptyView = emptyView;
+    }
+
+    /**
+     *
+     * @param emptyViewResId
+     * @param viewParent because your need set your empty view match parent
+     */
+    public void setEmptyViewResId(int emptyViewResId, ViewGroup viewParent) {
+        setEmptyView(mInflater.inflate(emptyViewResId, viewParent, false));
     }
 
 
@@ -356,7 +394,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
         void onLongClick(View view, T data, int position);
     }
 
-    public interface OnParallaxScroll {
+    public interface OnParallaxScrollListener {
         void onParallaxScroll(float percentage, float offset, View parallax);
     }
 
