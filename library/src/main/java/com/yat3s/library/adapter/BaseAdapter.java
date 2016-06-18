@@ -113,7 +113,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
         } else {
             int currentPosition = position - getHeaderViewCount();
             int currentLayoutId = getItemViewLayoutId(currentPosition, mData.get(currentPosition));
-            if (null == viewTypeMap.get(currentLayoutId)) {
+            if (!viewTypeMap.containsKey(currentLayoutId)) {
                 mCurrentViewTypeValue++;
                 viewTypeMap.put(currentLayoutId, mCurrentViewTypeValue);
                 layoutIdMap.put(viewTypeMap.get(currentLayoutId), currentLayoutId);
@@ -361,7 +361,6 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
     }
 
 
-
     /**
      * Empty view api
      */
@@ -370,9 +369,8 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
     }
 
     /**
-     *
      * @param emptyViewResId
-     * @param viewParent because your need set your empty view match parent
+     * @param viewParent     because your need set your empty view match parent
      */
     public void setEmptyViewResId(int emptyViewResId, ViewGroup viewParent) {
         setEmptyView(mInflater.inflate(emptyViewResId, viewParent, false));
