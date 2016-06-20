@@ -30,6 +30,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
     private static class VIEW_TYPE {
         static final int HEADER = 0x0010;
         static final int EMPTY_VIEW = 0x0011;
+        static final int LOADING_VIEW = 0x0012;
     }
 
     /**
@@ -51,7 +52,8 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
      */
     private Map<Integer, Integer> layoutIdMap, viewTypeMap;
     private int mCurrentViewTypeValue = 0x0107;
-    private View mEmptyView;
+    private View mEmptyView, mLoadingView;
+    private boolean hasAddData, showLoadingViewIgnoreHeader = true;
 
     /**
      * Animation
@@ -70,7 +72,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
     private float mScrollMultiplier = 0.5f;
     private OnParallaxScrollListener mParallaxScrollListener;
     private RecyclerView mRecyclerView;
-    private boolean mShouldClipView = false;
+    private boolean mShouldClipView = true;
 
     public BaseAdapter(Context context) {
         this(context, null);
@@ -95,6 +97,9 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
             case VIEW_TYPE.EMPTY_VIEW:
                 baseViewHolder = new BaseViewHolder(mEmptyView, mContext);
                 break;
+            case VIEW_TYPE.LOADING_VIEW:
+                baseViewHolder = new BaseViewHolder(mLoadingView, mContext);
+                break;
             default:
                 baseViewHolder = new BaseViewHolder(mInflater.inflate(layoutIdMap.get(viewType),
                         parent, false), mContext);
@@ -105,9 +110,22 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
     }
 
     @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        if (null != mLoadingView) {
+            notifyItemChanged(showLoadingViewIgnoreHeader ? 0 : getHeaderViewCount());
+        }
+    }
+
+    @Override
     public int getItemViewType(int position) {
         if (position < getHeaderViewCount()) {
+            if (!hasAddData && showLoadingViewIgnoreHeader && null != mLoadingView) {
+                return VIEW_TYPE.LOADING_VIEW;
+            }
             return VIEW_TYPE.HEADER;
+        } else if (!hasAddData && null != mLoadingView && !showLoadingViewIgnoreHeader) {
+            return VIEW_TYPE.LOADING_VIEW;
         } else if (mData.size() == 0 && null != mEmptyView) {
             return VIEW_TYPE.EMPTY_VIEW;
         } else {
@@ -129,6 +147,9 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
                 // Do nothing
                 break;
             case VIEW_TYPE.EMPTY_VIEW:
+                // Do nothing
+                break;
+            case VIEW_TYPE.LOADING_VIEW:
                 // Do nothing
                 break;
             default:
@@ -232,6 +253,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
     public void addFirstDataSet(List<T> data) {
         mData = data;
         notifyDataSetChanged();
+        hasAddData = true;
     }
 
     public void addMoreDataSet(List<T> data) {
@@ -362,7 +384,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
 
 
     /**
-     * Empty view api
+     * Empty view /retry view / loading view api
      */
     public void setEmptyView(View emptyView) {
         mEmptyView = emptyView;
@@ -374,6 +396,14 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
      */
     public void setEmptyViewResId(int emptyViewResId, ViewGroup viewParent) {
         setEmptyView(mInflater.inflate(emptyViewResId, viewParent, false));
+    }
+
+    public void setLoadingView(View loadingView) {
+        mLoadingView = loadingView;
+    }
+
+    public void setShowLoadingViewIgnoreHeader(boolean showLoadingViewIgnoreHeader) {
+        this.showLoadingViewIgnoreHeader = showLoadingViewIgnoreHeader;
     }
 
 
