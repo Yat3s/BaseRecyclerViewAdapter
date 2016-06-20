@@ -1,11 +1,13 @@
 package com.yat3s.library.sample;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.yat3s.library.adapter.AnimationType;
@@ -31,12 +33,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initView();
+        initRecyclerView();
         initAdapter();
         loadData();
     }
 
-    private void initView() {
+    private void initRecyclerView() {
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this));
@@ -47,9 +49,10 @@ public class MainActivity extends AppCompatActivity {
         mCarAdapter.addParallaxHeaderViewLayoutResId(R.layout.layout_header, mRecyclerView);
         mCarAdapter.setItemAnimation(AnimationType.SCALE);
         mCarAdapter.setShowItemAnimationEveryTime(false);
-        View emptyView = getLayoutInflater().inflate(R.layout.layout_empty_view, (ViewGroup)
-                mRecyclerView.getParent(), false);
-//        mCarAdapter.setEmptyView(emptyView);
+
+        /**
+         * Config some click listener
+         */
         mCarAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener<CarModel>() {
             @Override
             public void onClick(View view, CarModel car, int position) {
@@ -64,11 +67,26 @@ public class MainActivity extends AppCompatActivity {
                         .show();
             }
         });
+
+
+        /**
+         * Config loading view
+         */
+        View loadingView = getLayoutInflater().inflate(R.layout.layout_loading_view, (ViewGroup)
+                mRecyclerView.getParent(), false);
+        mCarAdapter.setLoadingView(loadingView);
+
+
         mRecyclerView.setAdapter(mCarAdapter);
     }
 
     private void loadData() {
-        mCarAdapter.addFirstDataSet(generateMockDataSet());
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mCarAdapter.addFirstDataSet(generateMockDataSet());
+            }
+        }, 3000);
     }
 
     private List<CarModel> generateMockDataSet() {
