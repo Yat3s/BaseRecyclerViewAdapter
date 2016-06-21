@@ -27,13 +27,16 @@ and there are many item animations and some fast api to decorate your adapter, f
     You can set empty view when data is empty.
 
 ### Gradle
-```groovy 
+
+```groovy
 dependencies {
-        compile "com.android.support:support-v4:+"
-} ```
+    compile "com.android.support:support-v4:+"
+}
+```
 
 ### Usage
-``` java
+
+```java
 public class MusicAdapter extends BaseAdapter<MusicModel> {
     public MusicAdapter(Context context) {
         super(context);
@@ -56,8 +59,8 @@ public class MusicAdapter extends BaseAdapter<MusicModel> {
     private boolean isLargeMusicItem(int position, MusicModel musicModel) {
         return 0 == position % 3 && musicModel.price < 80;
     }
-
-}```
+}
+```
 
 You need set ```mMusicAdapter.addFirstDataSet(dataList);``` if you set first data to your adapter. and use```mMusicAdapter.addMoreDataSet(dataList);```when your addd more data to your adapter
 
@@ -66,11 +69,13 @@ You need set ```mMusicAdapter.addFirstDataSet(dataList);``` if you set first dat
 
 - Header View   
 ``` java
-mMusicAdapter.addHeaderViewResId(R.layout.layout_header);```
+mMusicAdapter.addHeaderViewResId(R.layout.layout_header);
+```
 
 - Parallax Header View
 ``` java
-mMusicAdapter.addParallaxHeaderViewLayoutResId(R.layout.layout_header, mRecyclerView);```
+mMusicAdapter.addParallaxHeaderViewLayoutResId(R.layout.layout_header, mRecyclerView);
+```
 
 - ItemClickListener / HeaderViewClickListener
 ``` java
@@ -79,25 +84,31 @@ mMusicAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener<MusicMo
             public void onClick(View view, MusicModel car, int position) {
                 Toast.makeText(MainActivity.this, "Click " + position + ":" + car.name, Toast.LENGTH_SHORT).show();
             }
-        });```
+        });
+```
+
 ```java
 mMusicAdapter.setOnHeaderClickListener(new BaseAdapter.OnHeaderClickListener() {
         @Override
         public void onClick(View view) {
             Toast.makeText(MainActivity.this, "Click Header", Toast.LENGTH_SHORT).show();
         }
-    });```
+    });
+```
 
 - ItemAnimation / CustomItemAnimation
 ```
-mMusicAdapter.setItemAnimation(AnimationType.SCALE);```
+mMusicAdapter.setItemAnimation(AnimationType.SCALE);
+```
+
 ```
 mMusicAdapter.setCustomItemAnimator(new BaseAdapter.CustomAnimator() {
             @Override
             public Animator getAnimator(View itemView) {
                 return ObjectAnimator.ofFloat(itemView, "translationX", 0, 200);
             }
-        });```
+        });
+```
 
 - LoadingView / EmptyView
 ``` java
@@ -105,8 +116,10 @@ mMusicAdapter.setLoadingView(yourLoadingView);
 // if setShowLoadingViewIgnoreHeader(true) means when app is loading data, loading view will cover header;
 mMusicAdapter.setShowLoadingViewIgnoreHeader(true);
 ```
+
 ``` java
-mMusicAdapter.setEmptyView(yourEmptyView);```
+mMusicAdapter.setEmptyView(yourEmptyView);
+```
 
 - Other setting
 ```
@@ -122,6 +135,7 @@ mMusicAdapter.setParallaxScrollListener(new BaseAdapter.OnParallaxScrollListener
     public void onParallaxScroll(float percentage, float offset, View parallax) {
         // Do some thing such as hide toolbar
     }
-});```
+});
+```
 
 
