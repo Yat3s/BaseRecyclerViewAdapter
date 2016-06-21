@@ -11,19 +11,19 @@ and there are many item animations and some fast api to decorate your adapter, f
 
 ## Feature
 
-- #### HeaderView/ParallaxHeaderView  
+- **HeaderView/ParallaxHeaderView**   
     You can easily to add header view or parallax header View.
-- #### MultiViewType
+- **MultiViewType**    
     You can ignore origin view type, and just one line to set multi view type.
-- #### LoadAnimation
+- **LoadAnimation**    
     You needn't use recycler view itemAnimator and quick set item animation.
-- #### CustomAnimation
+- **CustomAnimation**  
     Also you want set your custom animation is ok.
-- #### ItemClickListener
+- **ItemClickListener**    
     You can set onItemClickListener easily.
-- #### LoadingView
+- **LoadingView**  
     You can set loading view while still loading data.
-- #### EmptyView
+- **EmptyView**    
     You can set empty view when data is empty.
 
 ### Gradle
