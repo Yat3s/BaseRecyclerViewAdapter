@@ -67,17 +67,17 @@ You need set ```mMusicAdapter.addFirstDataSet(dataList);``` if you set first dat
 
 ### Features
 
-- Header View   
+- **Header View**   
 ``` java
 mMusicAdapter.addHeaderViewResId(R.layout.layout_header);
 ```
 
-- Parallax Header View
+- **Parallax Header View**
 ``` java
 mMusicAdapter.addParallaxHeaderViewLayoutResId(R.layout.layout_header, mRecyclerView);
 ```
 
-- ItemClickListener / HeaderViewClickListener
+- **ItemClickListener / HeaderViewClickListener**
 ``` java
 mMusicAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener<MusicModel>() {
             @Override
@@ -96,7 +96,7 @@ mMusicAdapter.setOnHeaderClickListener(new BaseAdapter.OnHeaderClickListener() {
     });
 ```
 
-- ItemAnimation / CustomItemAnimation
+- **ItemAnimation / CustomItemAnimation**
 ```
 mMusicAdapter.setItemAnimation(AnimationType.SCALE);
 ```
@@ -110,7 +110,7 @@ mMusicAdapter.setCustomItemAnimator(new BaseAdapter.CustomAnimator() {
         });
 ```
 
-- LoadingView / EmptyView
+- **LoadingView / EmptyView**
 ``` java
 mMusicAdapter.setLoadingView(yourLoadingView);
 // if setShowLoadingViewIgnoreHeader(true) means when app is loading data, loading view will cover header;
@@ -121,7 +121,7 @@ mMusicAdapter.setShowLoadingViewIgnoreHeader(true);
 mMusicAdapter.setEmptyView(yourEmptyView);
 ```
 
-- Other setting
+- **Other setting**
 ```
 // Item Animation duration
 mMusicAdapter.setItemAnimationDuration(300);  
@@ -138,4 +138,7 @@ mMusicAdapter.setParallaxScrollListener(new BaseAdapter.OnParallaxScrollListener
 });
 ```
 
+### Thanks
+@kanytu give me some idea about parallax header
+https://github.com/kanytu/android-parallax-recyclerview
 
