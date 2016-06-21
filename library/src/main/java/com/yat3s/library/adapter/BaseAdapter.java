@@ -216,7 +216,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
      *
      * @param of offset in px
      */
-    public void translateHeader(float of) {
+    private void translateHeader(float of) {
         float ofCalculated = of * mScrollMultiplier;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB && of < mHeaderView.getHeight
                 ()) {

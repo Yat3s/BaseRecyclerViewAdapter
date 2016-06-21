@@ -1,12 +1,14 @@
 package com.yat3s.library.sample;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -31,15 +33,22 @@ public class MainActivity extends AppCompatActivity {
 
     private MusicAdapter mMusicAdapter;
     private RecyclerView mRecyclerView;
+    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initToolbar();
         initRecyclerView();
         initAdapter();
         loadData();
+    }
+
+    private void initToolbar() {
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
     }
 
     private void initRecyclerView() {
@@ -71,14 +80,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        mMusicAdapter.setParallaxScrollListener(new BaseAdapter.OnParallaxScrollListener() {
+            @Override
+            public void onParallaxScroll(float percentage, float offset, View parallax) {
+                Drawable c = mToolbar.getBackground();
+                c.setAlpha(Math.round(percentage * 255));
+                mToolbar.setBackground(c);
+            }
+        });
+
 
         /**
-         * Config loading view
+         * Config loading view/ empty view
          */
         View loadingView = getLayoutInflater().inflate(R.layout.layout_loading_view, (ViewGroup)
                 mRecyclerView.getParent(), false);
         mMusicAdapter.setLoadingView(loadingView);
-
+        mMusicAdapter.setEmptyViewResId(R.layout.layout_empty_view, (ViewGroup) mRecyclerView
+                .getParent());
 
         mRecyclerView.setAdapter(mMusicAdapter);
     }
@@ -127,7 +146,8 @@ public class MainActivity extends AppCompatActivity {
                 mMusicAdapter.setItemAnimation(AnimationType.SLIDE_FROM_BOTTOM);
                 break;
             case R.id.action_github:
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Yat3s/BaseRecyclerViewAdapter"));
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github" +
+                        ".com/Yat3s/BaseRecyclerViewAdapter"));
                 startActivity(browserIntent);
                 break;
         }
