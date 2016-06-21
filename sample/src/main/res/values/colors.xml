@@ -7,4 +7,12 @@
 
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
+    <color name="background">#EDEDED</color>
+    <color name="mask">#66000000</color>
+
+    <color name="color1">#df5a55</color>
+    <color name="color2">#f9bb72</color>
+    <color name="color3">#76afcf</color>
+    <color name="color4">#dd6495</color>
+    <color name="color5">#72d3b4</color>
 </resources>

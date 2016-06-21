@@ -7,7 +7,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.yat3s.library.adapter.AnimationType;
@@ -47,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private void initAdapter() {
         mCarAdapter = new CarAdapter(this);
         mCarAdapter.addParallaxHeaderViewLayoutResId(R.layout.layout_header, mRecyclerView);
-        mCarAdapter.setItemAnimation(AnimationType.SCALE);
+        mCarAdapter.setItemAnimation(AnimationType.SLIDE_FROM_LEFT);
         mCarAdapter.setShowItemAnimationEveryTime(false);
 
         /**
@@ -56,15 +55,14 @@ public class MainActivity extends AppCompatActivity {
         mCarAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener<CarModel>() {
             @Override
             public void onClick(View view, CarModel car, int position) {
-                Toast.makeText(MainActivity.this, position + ":" + car.name, Toast.LENGTH_SHORT)
-                        .show();
+                Toast.makeText(MainActivity.this, "Click " + position + ":" + car.name, Toast
+                        .LENGTH_SHORT).show();
             }
         });
         mCarAdapter.setOnHeaderClickListener(new BaseAdapter.OnHeaderClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "Header Click", Toast.LENGTH_SHORT)
-                        .show();
+                Toast.makeText(MainActivity.this, "Header Click", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -86,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 mCarAdapter.addFirstDataSet(generateMockDataSet());
             }
-        }, 3000);
+        }, 2000);
     }
 
     private List<CarModel> generateMockDataSet() {

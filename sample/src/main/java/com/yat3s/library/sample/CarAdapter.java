@@ -29,4 +29,5 @@ public class CarAdapter extends BaseAdapter<CarModel> {
         }
         return R.layout.item_house;
     }
+
 }
