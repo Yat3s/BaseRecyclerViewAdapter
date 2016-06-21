@@ -24,7 +24,7 @@ public class LoadingView extends View {
     private Paint paint = new Paint();
     private float handle_len_rate = 2f;
     private float radius = 30;
-    private final int ITEM_COUNT = 6;
+    private final int ITEM_COUNT = 12;
     private final int ITEM_DIVIDER = 60;
     private final float SCALE_RATE = 0.3f;
     private float maxLength;
@@ -60,7 +60,7 @@ public class LoadingView extends View {
     }
 
     private void init() {
-        paint.setColor(0xff4db9ff);
+        paint.setColor(0xfff9bb72);
         paint.setStyle(Paint.Style.FILL);
         paint.setAntiAlias(true);
         Circle circlePath = new Circle();

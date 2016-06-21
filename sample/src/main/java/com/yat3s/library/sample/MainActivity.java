@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         mMusicAdapter.setOnHeaderClickListener(new BaseAdapter.OnHeaderClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "Header Click", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Click Header", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 mMusicAdapter.addFirstDataSet(generateMockDataSet());
             }
-        }, 1000);
+        }, 1500);
     }
 
     private List<MusicModel> generateMockDataSet() {
