@@ -7,7 +7,7 @@
     android:layout_marginLeft="12dp"
     android:layout_marginRight="12dp"
     android:layout_marginTop="8dp"
-    android:background="#ADADAD"
+    android:background="@color/color5"
     android:orientation="horizontal">
 
     <TextView
@@ -21,7 +21,7 @@
         android:id="@+id/price_tv"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:background="@color/color1"
+        android:background="@color/color3"
         android:gravity="center"
         android:textColor="@color/white"/>
 

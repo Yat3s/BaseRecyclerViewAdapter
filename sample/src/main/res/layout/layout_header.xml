@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="256dp"
-             android:background="@mipmap/header"
-             android:orientation="vertical">
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="256dp"
+    android:background="@mipmap/header"
+    android:orientation="vertical">
 
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#66000000"/>
+        android:background="@color/mask"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -16,7 +17,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:padding="24dp"
-        android:text="HEADER"
-        android:textColor="#FFFFFF"
-        android:textSize="44dp"/>
+        android:text="@string/header"
+        android:textColor="@color/white"
+        android:textSize="34sp"/>
 </FrameLayout>

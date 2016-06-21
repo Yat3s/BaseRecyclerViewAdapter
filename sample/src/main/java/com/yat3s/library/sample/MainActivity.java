@@ -1,10 +1,15 @@
 package com.yat3s.library.sample;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -24,7 +29,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private CarAdapter mCarAdapter;
+    private MusicAdapter mMusicAdapter;
     private RecyclerView mRecyclerView;
 
     @Override
@@ -44,22 +49,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initAdapter() {
-        mCarAdapter = new CarAdapter(this);
-        mCarAdapter.addParallaxHeaderViewLayoutResId(R.layout.layout_header, mRecyclerView);
-        mCarAdapter.setItemAnimation(AnimationType.SLIDE_FROM_LEFT);
-        mCarAdapter.setShowItemAnimationEveryTime(false);
+        mMusicAdapter = new MusicAdapter(this);
+        mMusicAdapter.addParallaxHeaderViewLayoutResId(R.layout.layout_header, mRecyclerView);
+        mMusicAdapter.setItemAnimation(AnimationType.SLIDE_FROM_LEFT);
+        mMusicAdapter.setShowItemAnimationEveryTime(false);
 
         /**
          * Config some click listener
          */
-        mCarAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener<CarModel>() {
+        mMusicAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener<MusicModel>() {
             @Override
-            public void onClick(View view, CarModel car, int position) {
+            public void onClick(View view, MusicModel car, int position) {
                 Toast.makeText(MainActivity.this, "Click " + position + ":" + car.name, Toast
                         .LENGTH_SHORT).show();
             }
         });
-        mCarAdapter.setOnHeaderClickListener(new BaseAdapter.OnHeaderClickListener() {
+        mMusicAdapter.setOnHeaderClickListener(new BaseAdapter.OnHeaderClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(MainActivity.this, "Header Click", Toast.LENGTH_SHORT).show();
@@ -72,27 +77,60 @@ public class MainActivity extends AppCompatActivity {
          */
         View loadingView = getLayoutInflater().inflate(R.layout.layout_loading_view, (ViewGroup)
                 mRecyclerView.getParent(), false);
-        mCarAdapter.setLoadingView(loadingView);
+        mMusicAdapter.setLoadingView(loadingView);
 
 
-        mRecyclerView.setAdapter(mCarAdapter);
+        mRecyclerView.setAdapter(mMusicAdapter);
     }
 
     private void loadData() {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                mCarAdapter.addFirstDataSet(generateMockDataSet());
+                mMusicAdapter.addFirstDataSet(generateMockDataSet());
             }
-        }, 2000);
+        }, 1000);
     }
 
-    private List<CarModel> generateMockDataSet() {
-        List<CarModel> mockData = new ArrayList<>();
+    private List<MusicModel> generateMockDataSet() {
+        List<MusicModel> mockData = new ArrayList<>();
         for (int idx = 0; idx < 100; idx++) {
-            CarModel car = new CarModel("Car " + idx, (int) (Math.random() * 10000));
+            MusicModel car = new MusicModel("Music " + idx, (int) (Math.random() * 100));
             mockData.add(car);
         }
         return mockData;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_alpha:
+                mMusicAdapter.setItemAnimation(AnimationType.ALPHA);
+                break;
+            case R.id.action_scale:
+                mMusicAdapter.setItemAnimation(AnimationType.SCALE);
+                break;
+            case R.id.action_slide_from_left:
+                mMusicAdapter.setItemAnimation(AnimationType.SLIDE_FROM_LEFT);
+                break;
+            case R.id.action_slide_from_right:
+                mMusicAdapter.setItemAnimation(AnimationType.SLIDE_FROM_RIGHT);
+                break;
+            case R.id.action_slide_from_bottom:
+                mMusicAdapter.setItemAnimation(AnimationType.SLIDE_FROM_BOTTOM);
+                break;
+            case R.id.action_github:
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Yat3s/BaseRecyclerViewAdapter"));
+                startActivity(browserIntent);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

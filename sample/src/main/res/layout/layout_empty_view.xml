@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="24dp"
-        android:text="Empty!"
+        android:text="@string/empty"
         android:textColor="@color/black"
-        android:textSize="44dp"/>
+        android:textSize="34sp"/>
 </LinearLayout>

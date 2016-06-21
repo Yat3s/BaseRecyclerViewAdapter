@@ -6,12 +6,12 @@ package com.yat3s.library.sample;
  * GitHub: https://github.com/yat3s
  */
 
-public class CarModel {
+public class MusicModel {
     public String name;
 
     public int price;
 
-    public CarModel(String name, int price) {
+    public MusicModel(String name, int price) {
         this.name = name;
         this.price = price;
     }
