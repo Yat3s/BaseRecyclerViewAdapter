@@ -6,7 +6,7 @@ and there are many item animations and some fast api to decorate your adapter, f
 
 
 ## DEMO
-
+//TODO
 
 
 ## Feature
@@ -25,12 +25,15 @@ and there are many item animations and some fast api to decorate your adapter, f
     You can set loading view while still loading data.
 - **EmptyView**    
     You can set empty view when data is empty.
+- **SectionView**   //TODO
+     //TODO
+    
 
 ### Gradle
 
 ```groovy
 dependencies {
-    compile "com.android.support:support-v4:+"
+    // TODO
 }
 ```
 
