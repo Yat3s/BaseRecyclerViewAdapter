@@ -332,7 +332,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
         mHeaderView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams
                 .WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         mHeaderView.addView(headerView);
-        notifyDataSetChanged();
+        notifyItemChanged(0);
     }
 
     public void addHeaderViewResId(int layoutResId) {
