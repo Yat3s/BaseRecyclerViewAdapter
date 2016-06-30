@@ -6,7 +6,7 @@ and there are many item animations and some fast api to decorate your adapter, f
 
 
 ## DEMO
-//TODO
+![](https://cloud.githubusercontent.com/assets/14801837/16490292/9fddf85c-3f0b-11e6-978b-7a1db93b2d3b.gif)
 
 
 ## Feature
@@ -34,6 +34,8 @@ and there are many item animations and some fast api to decorate your adapter, f
 ```groovy
 dependencies {
     // TODO
+    // Do not have enough time to upload this lib to maven.
+    // But you can clone this project or fork this.
 }
 ```
 
@@ -46,9 +48,15 @@ public class MusicAdapter extends BaseAdapter<MusicModel> {
     }
 
     @Override
-    protected void bindDataToItemView(BaseViewHolder holder, MusicModel data, int position) {
-        holder.setText(R.id.name_tv, data.name)
-                .setText(R.id.price_tv, "$ " + data.price);
+    protected void bindDataToItemView(BaseViewHolder holder, MusicModel item, int position) {
+        holder.setText(R.id.name_tv, item.name)
+                .setText(R.id.price_tv, "$ " + item.price)
+                .setTextColorRes(R.id.price_tv, R.color.white);
+        holder.getView(R.id.custom_view).setXXXX();
+        
+        if(isLargeMusicItem(position, item)) {
+            // Do something
+        }
     }
 
     @Override
