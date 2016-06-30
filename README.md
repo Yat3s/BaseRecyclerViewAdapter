@@ -6,7 +6,7 @@ and there are many item animations and some fast api to decorate your adapter, f
 
 
 ## DEMO
-//TODO
+![](https://cloud.githubusercontent.com/assets/14801837/16490292/9fddf85c-3f0b-11e6-978b-7a1db93b2d3b.gif)
 
 
 ## Feature
@@ -34,6 +34,8 @@ and there are many item animations and some fast api to decorate your adapter, f
 ```groovy
 dependencies {
     // TODO
+    // Do not have enough time to upload this lib to maven.
+    // But you can clone this project or fork this.
 }
 ```
 
