@@ -48,9 +48,15 @@ public class MusicAdapter extends BaseAdapter<MusicModel> {
     }
 
     @Override
-    protected void bindDataToItemView(BaseViewHolder holder, MusicModel data, int position) {
-        holder.setText(R.id.name_tv, data.name)
-                .setText(R.id.price_tv, "$ " + data.price);
+    protected void bindDataToItemView(BaseViewHolder holder, MusicModel item, int position) {
+        holder.setText(R.id.name_tv, item.name)
+                .setText(R.id.price_tv, "$ " + item.price)
+                .setTextColorRes(R.id.price_tv, R.color.white);
+        holder.getView(R.id.custom_view).setXXXX();
+        
+        if(isLargeMusicItem(position, item)) {
+            // Do something
+        }
     }
 
     @Override
