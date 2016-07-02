@@ -25,8 +25,8 @@ and there are many item animations and some fast api to decorate your adapter, f
     You can set loading view while still loading data.
 - **EmptyView**    
     You can set empty view when data is empty.
-- **SectionView**   //TODO
-     //TODO
+- **SectionView**   //TODO  
+    //TODO
     
 
 ### Gradle
@@ -150,6 +150,7 @@ mMusicAdapter.setParallaxScrollListener(new BaseAdapter.OnParallaxScrollListener
 ```
 
 ### Thanks
-@kanytu give me some idea about parallax header
+@kanytu     
+give me some idea about parallax header
 https://github.com/kanytu/android-parallax-recyclerview
 
