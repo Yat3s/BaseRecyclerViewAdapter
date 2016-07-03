@@ -246,9 +246,9 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
     /**
      * Base api
      */
-    protected abstract void bindDataToItemView(BaseViewHolder holder, T t, int position);
+    protected abstract void bindDataToItemView(BaseViewHolder holder, T item, int position);
 
-    protected abstract int getItemViewLayoutId(int position, T t);
+    protected abstract int getItemViewLayoutId(int position, T item);
 
     public void addFirstDataSet(List<T> data) {
         mData = data;
@@ -261,7 +261,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
         notifyDataSetChanged();
     }
 
-    public List getDataSource() {
+    public List<T> getDataSource() {
         return mData;
     }
 
@@ -415,11 +415,11 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
     }
 
     public interface OnItemClickListener<T> {
-        void onClick(View view, T t, int position);
+        void onClick(View view, T item, int position);
     }
 
     public interface OnItemLongClickListener<T> {
-        void onLongClick(View view, T t, int position);
+        void onLongClick(View view, T item, int position);
     }
 
     public interface OnParallaxScrollListener {
