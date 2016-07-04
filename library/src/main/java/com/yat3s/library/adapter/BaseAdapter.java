@@ -37,7 +37,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
      * Base config
      */
     private List<T> mData;
-    protected Context mContext;
+    private Context mContext;
     private LayoutInflater mInflater;
 
     /**
