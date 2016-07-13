@@ -33,9 +33,7 @@ and there are many item animations and some fast api to decorate your adapter, f
 
 ```groovy
 dependencies {
-    // TODO
-    // Do not have enough time to upload this lib to maven.
-    // But you can clone this project or fork this.
+    compile 'com.yat3s.library:baseadapter:0.1.1'
 }
 ```
 
