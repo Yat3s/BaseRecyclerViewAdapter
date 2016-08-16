@@ -10,7 +10,7 @@ and there are many item animations and some fast api to decorate your adapter, f
 
 ## Download
 
-Run your device     
+Run on your device     
 [Download apk](https://github.com/Yat3s/BaseRecyclerViewAdapter/releases/download/0.1.1/sample.apk)
 
 ```groovy
