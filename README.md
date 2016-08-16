@@ -6,11 +6,18 @@ and there are many item animations and some fast api to decorate your adapter, f
 
 
 ## DEMO
-[Download apk](https://github.com/Yat3s/BaseRecyclerViewAdapter/releases/download/0.1.1/sample.apk)
-
 ![](https://cloud.githubusercontent.com/assets/14801837/16490292/9fddf85c-3f0b-11e6-978b-7a1db93b2d3b.gif)
 
+## Download
 
+Run your device     
+[Download apk](https://github.com/Yat3s/BaseRecyclerViewAdapter/releases/download/0.1.1/sample.apk)
+
+```groovy
+dependencies {
+    compile 'com.yat3s.library:baseadapter:0.1.1'
+}
+```
 
 ## Feature
 
@@ -31,15 +38,6 @@ and there are many item animations and some fast api to decorate your adapter, f
 - **SectionView**   //TODO  
     //TODO
     
-
-### Gradle
-
-```groovy
-dependencies {
-    compile 'com.yat3s.library:baseadapter:0.1.1'
-}
-```
-
 ### Usage
 
 ```java
