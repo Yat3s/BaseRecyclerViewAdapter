@@ -35,8 +35,8 @@ dependencies {
     You can set loading view while still loading data.
 - **EmptyView**    
     You can set empty view when data is empty.
-- **SectionView**   //TODO  
-    //TODO
+- **SectionView**   
+    //TODO  But I dont have any idea to implement it.
     
 ### Usage
 
